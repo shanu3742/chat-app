@@ -1,12 +1,21 @@
 import React from 'react';
 import './styles/main.scss';
 import 'rsuite/lib/styles/themes/dark/index.less';
-import { Switch, Route } from 'react-router';
+import { Switch } from 'react-router';
+import Signin from './Pages/Signin';
+import Home from './Pages/Home';
+import PrivateRoute from './components/PrivateRoute';
+import PublicRoute from './components/PublicRoute';
 
 function App() {
   return (
     <Switch>
-      <Route>hey</Route>
+      <PublicRoute path="/signin">
+        <Signin />
+      </PublicRoute>
+      <PrivateRoute path="/">
+        <Home />
+      </PrivateRoute>
     </Switch>
   );
 }
