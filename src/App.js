@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles/main.scss';
-import 'rsuite/lib/styles/themes/dark/index.less';
+import 'rsuite/dist/styles/rsuite-default.css';
 import { Switch } from 'react-router';
 import Signin from './Pages/Signin';
 import Home from './Pages/Home';
