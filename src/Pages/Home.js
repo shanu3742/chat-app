@@ -1,7 +1,8 @@
 import React from 'react';
+import { Grid } from 'rsuite';
 
 const Home = () => {
-  return <div>its my home</div>;
+  return <Grid>hi</Grid>;
 };
 
 export default Home;
