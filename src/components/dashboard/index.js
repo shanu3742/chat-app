@@ -2,7 +2,7 @@ import React from 'react';
 import { Drawer, Button, Icon } from 'rsuite';
 import { useProfile } from '../../context/profile.context';
 
-const Dashboard = () => {
+const Dashboard = ({ onSignOut }) => {
   // eslint-disable-next-line no-unused-vars
   const Profile = useProfile();
 
@@ -15,7 +15,7 @@ const Dashboard = () => {
         <h3>Hey,{Profile.profile.name}</h3>
       </Drawer.Body>
       <Drawer.Footer>
-        <Button block color="red">
+        <Button block color="red" onClick={onSignOut}>
           <Icon icon="sign-out" /> Signout
         </Button>
       </Drawer.Footer>
