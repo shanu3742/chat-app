@@ -22,10 +22,19 @@ const CreateRoomBtnModal = () => {
       <Modal show={isOpen} onHide={close}>
         <Modal.Header>New chat room</Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form fluid>
             <FormGroup>
               <ControlLabel>Room name</ControlLabel>
               <FormControl name="name" placeholder="Enter chat room name..." />
+            </FormGroup>
+            <FormGroup>
+              <ControlLabel>Description</ControlLabel>
+              <FormControl
+                componentClass="textarea"
+                rows={5}
+                name="description"
+                placeholder="Enter room description"
+              />
             </FormGroup>
           </Form>
         </Modal.Body>
