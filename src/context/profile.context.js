@@ -22,6 +22,7 @@ const ProfileProvider = ({ children }) => {
             uid: authobj.uid,
             email: authobj.email,
           };
+
           setProfile(data);
           setIsLoading(false);
         });

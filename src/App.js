@@ -7,6 +7,7 @@ import Home from './Pages/Home';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import ProfileProvider from './context/profile.context';
+import './styles/utility.scss';
 
 function App() {
   return (
