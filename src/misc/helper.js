@@ -6,4 +6,12 @@ function getName(name) {
   const LastWordLowerCase = LastWord.toLowerCase();
   return firstWord + LastWordLowerCase;
 }
+function transformToArrWithId(snapVal) {
+  return snapVal
+    ? Object.keys(snapVal).map(roomId => {
+        return { ...snapVal[roomId], id: roomId };
+      })
+    : [];
+}
 export default getName;
+export { transformToArrWithId };
