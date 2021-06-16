@@ -8,7 +8,7 @@ const PublicRoute = ({ children, ...routeprops }) => {
   if (isLoading && !profile) {
     return (
       <Container rows={8}>
-        <Loader size="lg" speed="slow" backdrop content="loading..." vertical />
+        <Loader size="md" speed="slow" content="loading..." vertical />
       </Container>
     );
   }
