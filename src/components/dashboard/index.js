@@ -5,16 +5,21 @@ import { database } from '../../misc/firebase';
 import EditableInput from './EditableInput';
 import ProviderBlock from './ProviderBlock';
 import AvatarUploadBtn from './AvatarUploadBtn';
+import { getUserUpdate } from '../../misc/helper';
 
 const Dashboard = ({ onSignOut }) => {
   // eslint-disable-next-line no-unused-vars
-  const Profile = useProfile();
-  const onSave = async newdata => {
-    const userNicknameRef = database
-      .ref(`/profiles/${Profile.profile.uid}`)
-      .child('name');
+  const { profile } = useProfile();
+  const onSave = async newData => {
     try {
-      await userNicknameRef.set(newdata);
+      const updates = await getUserUpdate(
+        profile.uid,
+        'name',
+        newData,
+        database
+      );
+
+      await database.ref().update(updates);
       Alert.success('Nickname has been updated', 4000);
     } catch (err) {
       Alert.error('you did some mistakes', 4000);
@@ -27,12 +32,12 @@ const Dashboard = ({ onSignOut }) => {
         <Drawer.Title>Dashboard</Drawer.Title>
       </Drawer.Header>
       <Drawer.Body>
-        <h3>Hey,{Profile.profile.name}</h3>
+        <h3>Hey,{profile.name}</h3>
         <ProviderBlock />
         <Divider />
         <EditableInput
           name="nickname"
-          initialValue={Profile.profile.name}
+          initialValue={profile.name}
           onSave={onSave}
           label={<h6 className="mb-2">Nickname</h6>}
         />

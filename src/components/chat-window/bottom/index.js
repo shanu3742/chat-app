@@ -18,7 +18,6 @@ function assembleMessage(profile, chatId) {
   };
 }
 const Bottom = () => {
-  // eslint-disable-next-line no-unused-vars
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { chatId } = useParams();

@@ -5,6 +5,7 @@ import { useProfile } from '../../context/profile.context';
 import useModelState from '../../misc/custom-hooks';
 import ProfileAvatar from '../ProfileAvatar';
 import { database, storage } from '../../misc/firebase';
+import { getUserUpdate } from '../../misc/helper';
 
 const fileInputType = '.png, .jpeg , .jpg';
 const acceptedFileTypes = ['image/png', 'image/jpeg', 'image/pjpeg'];
@@ -21,7 +22,7 @@ const getBlob = canvas => {
   });
 };
 const AvatarUploadBtn = () => {
-  const Profile = useProfile();
+  const { profile } = useProfile();
   const { isOpen, open, close } = useModelState();
   const avtarEditorRef = useRef();
   const [img, setImg] = useState(null);
@@ -35,7 +36,7 @@ const AvatarUploadBtn = () => {
         open();
       } else {
         Alert.warning(
-          `Hey ${Profile.profile.name} you selected wrong file type ${file.type}`,
+          `Hey ${profile.name} you selected wrong file type ${file.type}`,
           4000
         );
       }
@@ -47,16 +48,23 @@ const AvatarUploadBtn = () => {
     try {
       const blob = await getBlob(canvas);
       const avatarFileRef = storage
-        .ref(`/profile/${Profile.profile.uid}`)
+        .ref(`/profile/${profile.uid}`)
         .child('avatar');
       const uploadAvatarResult = await avatarFileRef.put(blob, {
         cacheControl: `public, max-age=${3600 * 24 * 3}`,
       });
       const downloadUrl = await uploadAvatarResult.ref.getDownloadURL();
-      const userAvatarRef = database
-        .ref(`/profiles/${Profile.profile.uid}`)
-        .child('avatar');
-      userAvatarRef.set(downloadUrl);
+
+      const updates = await getUserUpdate(
+        profile.uid,
+        'avatar',
+        downloadUrl,
+        database
+      );
+      console.log(updates);
+
+      await database.ref().update(updates);
+
       setIsLoading(false);
       Alert.info('Avtar has been uploaded');
     } catch (err) {
@@ -67,8 +75,8 @@ const AvatarUploadBtn = () => {
   return (
     <div className="mt-3 text-center">
       <ProfileAvatar
-        name={Profile.profile.name}
-        src={Profile.profile.avatar}
+        name={profile.name}
+        src={profile.avatar}
         className="width-200 height-200 img-fullsize font-huge"
       />
       <div>
