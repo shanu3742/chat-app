@@ -22,7 +22,6 @@ const Bottom = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { chatId } = useParams();
   const { profile } = useProfile();
-  console.log(profile);
 
   const onInputChange = useCallback(
     value => {

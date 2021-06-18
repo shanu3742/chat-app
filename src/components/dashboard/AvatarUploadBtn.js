@@ -61,7 +61,6 @@ const AvatarUploadBtn = () => {
         downloadUrl,
         database
       );
-      console.log(updates);
 
       await database.ref().update(updates);
 
