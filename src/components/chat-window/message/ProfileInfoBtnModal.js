@@ -7,13 +7,13 @@ const ProfileInfoBtnModal = ({ profile, ...btnProps }) => {
   const { isOpen, close, open } = useModelState();
 
   const { name, avatar, createdAt } = profile;
-  const shortName = name.split('')[0];
 
   const membersince = new Date(createdAt).toLocaleDateString();
+
   return (
     <>
       <Button {...btnProps} onClick={open}>
-        {shortName}
+        {name}
       </Button>
       <Modal show={isOpen} onHide={close}>
         <Modal.Header>

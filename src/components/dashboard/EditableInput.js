@@ -6,8 +6,8 @@ const EditableInput = ({
   onSave,
   label = null,
   placeholder = 'write your value',
-  // eslint-disable-next-line no-unused-vars
   emptyMsg = 'input is empty',
+  wrapperClassName = '',
   ...inputProps
 }) => {
   const [onSaveHover, setonSaveHover] = useState(false);
@@ -40,7 +40,7 @@ const EditableInput = ({
     setHover(false);
   };
   return (
-    <div>
+    <div className={wrapperClassName}>
       {label}
       <InputGroup>
         <Input
