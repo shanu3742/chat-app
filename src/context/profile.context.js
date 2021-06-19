@@ -1,5 +1,16 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import firebase from 'firebase/app';
 import { auth, database } from '../misc/firebase';
+
+export const isOfflineForDatabase = {
+  state: 'offline',
+  last_changed: firebase.database.ServerValue.TIMESTAMP,
+};
+
+const isOnlineForDatabase = {
+  state: 'online',
+  last_changed: firebase.database.ServerValue.TIMESTAMP,
+};
 
 const ProfileContext = createContext();
 
@@ -8,10 +19,11 @@ const ProfileProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     let userRef;
+    let userStatusRef;
 
     const authUnsub = auth.onAuthStateChanged(authobj => {
       if (authobj) {
-        // for subscription we use on
+        userStatusRef = database.ref(`/status/${authobj.uid}`);
         userRef = database.ref(`/profiles/${authobj.uid}`);
         userRef.on('value', snap => {
           const { name, createdAt, avatar } = snap.val();
@@ -26,10 +38,27 @@ const ProfileProvider = ({ children }) => {
           setProfile(data);
           setIsLoading(false);
         });
+
+        database.ref('.info/connected').on('value', snapshot => {
+          if (snapshot.val() === false) {
+            return;
+          }
+
+          userStatusRef
+            .onDisconnect()
+            .set(isOfflineForDatabase)
+            .then(() => {
+              userStatusRef.set(isOnlineForDatabase);
+            });
+        });
       } else {
         if (userRef) {
           userRef.off();
         }
+        if (userStatusRef) {
+          userStatusRef.off();
+        }
+        database.ref('.info/connected').off();
         setProfile(null);
         setIsLoading(false);
       }
@@ -39,6 +68,10 @@ const ProfileProvider = ({ children }) => {
       if (userRef) {
         userRef.off();
       }
+      if (userStatusRef) {
+        userStatusRef.off();
+      }
+      database.ref('.info/connected').off();
     };
   }, []);
   return (
@@ -47,5 +80,6 @@ const ProfileProvider = ({ children }) => {
     </ProfileContext.Provider>
   );
 };
+
 export default ProfileProvider;
 export const useProfile = () => useContext(ProfileContext);
