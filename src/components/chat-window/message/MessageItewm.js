@@ -3,12 +3,14 @@ import { Button } from 'rsuite';
 import TimeAgo from 'timeago-react';
 import { useCurrentRoom } from '../../../context/current-room-context';
 import { auth } from '../../../misc/firebase';
+import useHover from '../../../misc/hover';
 import PresenceDot from '../../PresenceDot';
 import ProfileAvatar from '../../ProfileAvatar';
 import ProfileInfoBtnModal from './ProfileInfoBtnModal';
 
 const MessageItem = ({ message, handleAdmin }) => {
   const { author, createdAt, text } = message;
+  const [selfRef, ishover] = useHover();
   const isAdmin = useCurrentRoom(v => v.isAdmin);
   const admins = useCurrentRoom(v => v.admins);
   const isMsgAuthorAdmin = admins.includes(author.uid);
@@ -16,7 +18,10 @@ const MessageItem = ({ message, handleAdmin }) => {
   const canGrantAdmin = isAdmin && !isAuthor;
 
   return (
-    <li className="padded mb-1">
+    <li
+      className={`padded mb-1 cursor-pointer ${ishover ? 'bg-black-02' : ''}`}
+      ref={selfRef}
+    >
       <div className="d-flex align-items-center font-bolder mb-1">
         <PresenceDot uid={author.uid} />
         <ProfileAvatar
