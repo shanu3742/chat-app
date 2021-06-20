@@ -11,7 +11,7 @@ import ProfileInfoBtnModal from './ProfileInfoBtnModal';
 import IconBtnControl from './IconBtnControl';
 import { useMediaQuery } from '../../../misc/usemediaquery';
 
-const MessageItem = ({ message, handleAdmin, handleLike }) => {
+const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
   const { author, createdAt, text, likes, likesCount } = message;
   const [selfRef, ishover] = useHover();
   const isMobile = useMediaQuery('(max-width:992px)');
@@ -59,6 +59,14 @@ const MessageItem = ({ message, handleAdmin, handleLike }) => {
           onClick={() => handleLike(message.id)}
           badgeContent={likesCount}
         />
+        {isAuthor && (
+          <IconBtnControl
+            isVisible={canShowIcon}
+            iconName="close"
+            tooltip="Delete this message"
+            onClick={() => handleDelete(message.id)}
+          />
+        )}
       </div>
       <div>
         <span className="word-breal-all">{text}</span>
