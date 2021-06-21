@@ -39,6 +39,17 @@ async function getUserUpdate(userId, keyToUpdate, value, db) {
   });
   return updates;
 }
-
+// groupBy(messages, (msgItem) => msgItem.createAt)
+export function groupBy(array, groupingKeyfn) {
+  return array.reduce((result, item) => {
+    const groupingKey = groupingKeyfn(item);
+    if (!result[groupingKey]) {
+      // eslint-disable-next-line no-param-reassign
+      result[groupingKey] = [];
+    }
+    result[groupingKey].push(item);
+    return result;
+  }, {});
+}
 export default getName;
 export { transformToArrWithId, getUserUpdate };
