@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable no-constant-condition */
 import React, { memo } from 'react';
 import { Button } from 'rsuite';
@@ -18,6 +19,14 @@ const renderFileMessage = file => {
       <div className="height-220">
         <ImageBtnModal src={file.url} fileName={file.name} />
       </div>
+    );
+  }
+  if (file.contentType.includes('audio')) {
+    return (
+      <audio controls>
+        <source src={file.url} type="audio/mp3" />
+        Your browser does not support the audio element.
+      </audio>
     );
   }
 
@@ -77,7 +86,7 @@ const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
             isVisible={canShowIcon}
             iconName="close"
             tooltip="Delete this message"
-            onClick={() => handleDelete(message.id)}
+            onClick={() => handleDelete(message.id, file)}
           />
         )}
       </div>
